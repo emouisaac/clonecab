@@ -1,0 +1,558 @@
+/* Base Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  background-color: #000;
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+#menu {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Search Box */
+.search-box {
+  padding: 20px;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* Previous Trips */
+.previous-trips {
+  background: white;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.previous-trips h2 {
+  margin-bottom: 10px;
+}
+
+#trip-list {
+  list-style-type: none;
+}
+
+#trip-list li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Trip Options */
+.trip-options {
+  background: white;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.trip-options h2 {
+  margin-bottom: 10px;
+}
+
+.scrollable-options {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.option {
+  min-width: 130px;
+  padding: 12px;
+  background-color: #eee;
+  border-radius: 8px;
+  text-align: center;
+  flex: 0 0 auto;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.option:hover {
+  background-color: #ddd;
+}
+
+/* Map Section */
+#map-display {
+  padding: 20px;
+}
+
+#map {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+#vehicle-options {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Confirm Ride Button */
+#confirm-ride {
+  display: block;
+  width: 90%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 14px;
+  background-color: #000;
+  color: white;
+  border: none;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Footer */
+footer {
+  background-color: #000;
+  color: white;
+  padding: 15px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+footer nav {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+footer nav span {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 20px;
+  }
+
+  .option {
+    min-width: 100px;
+    font-size: 14px;
+  }
+
+  #confirm-ride {
+    font-size: 14px;
+  }
+}
+/* Reset some default styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f8f9fa;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header */
+header {
+  background: #000;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-weight: 700;
+}
+
+#menu {
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Main Customer Dashboard */
+main#customer-dashboard {
+  flex-grow: 1;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+/* Search box */
+.search-box input#destination {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+/* Previous trips */
+.previous-trips {
+  margin-bottom: 20px;
+}
+
+.previous-trips h2 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.previous-trips ul {
+  list-style: none;
+  max-height: 100px;
+  overflow-y: auto;
+  padding-left: 10px;
+  border-left: 4px solid #000;
+}
+
+.previous-trips ul li {
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+/* Trip options scroll */
+.trip-options {
+  margin-bottom: 20px;
+}
+
+.trip-options h2 {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.scrollable-options {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.vehicle-choice {
+  flex: 0 0 auto;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 15px 25px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.3s, border-color 0.3s;
+  user-select: none;
+}
+
+.vehicle-choice:hover,
+.vehicle-choice.selected {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* Map display */
+#map {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+/* Booking section */
+.booking-section {
+  text-align: center;
+  padding: 15px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+}
+
+#fare-display {
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+#confirm-ride {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 15px 40px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#confirm-ride:hover {
+  background-color: #222;
+}
+
+/* Footer */
+footer {
+  background: #000;
+  color: #fff;
+  padding: 15px 20px;
+  text-align: center;
+}
+
+footer nav span {
+  margin: 0 15px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+footer nav span:hover {
+  text-decoration: underline;
+}
+
+/* Scrollbar for trip history and vehicle options */
+.previous-trips ul::-webkit-scrollbar,
+.scrollable-options::-webkit-scrollbar {
+  height: 8px;
+}
+
+.previous-trips ul::-webkit-scrollbar-thumb,
+.scrollable-options::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .vehicle-choice {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  #confirm-ride {
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Login Modal Overlay */
+#login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Modal Box */
+.login-wrapper {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-buttons button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+#login-form {
+  margin-top: 15px;
+}
+
+#login-form input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+
+
+
+#logout-btn {
+  background-color: crimson;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+
+
+
+
+/* ===== Driver Registration Form ===== */
+#driver-register {
+  background: #f9f9f9;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+#driver-register h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+#driver-register form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#driver-register input {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+#driver-register input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+#driver-register button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#driver-register button:hover {
+  background: #0056b3;
+}
+
+@media (max-width: 480px) {
+  #driver-register {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  #driver-register input,
+  #driver-register button {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+}
+
+
+
+
+
+.scrollable-options {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.ride-option {
+  flex: 0 0 auto;
+  background: #eee;
+  padding: 1rem;
+  border-radius: 10px;
+  min-width: 100px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ride-option:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+#ride-summary {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f4f4f4;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#confirm-ride {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
+
+
+
