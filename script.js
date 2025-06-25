@@ -320,6 +320,47 @@ document.getElementById("show-login").addEventListener("click", () => {
 //ooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 
+document.getElementById("login-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
+
+  if (currentRole === "admin") {
+    if (email === "admin@uber.com" && password === "Admin@123") {
+      alert("Welcome Admin");
+      showDashboard("admin-dashboard");
+    } else {
+      alert("Invalid admin credentials. Redirecting to customer dashboard...");
+      showDashboard("customer-dashboard");
+    }
+
+  } else if (currentRole === "customer") {
+    const users = JSON.parse(localStorage.getItem("customers") || "[]");
+    const match = users.find(u => u.email === email && u.password === password);
+
+    if (match) {
+      alert(`Welcome ${match.name}`);
+      showDashboard("customer-dashboard");
+    } else {
+      alert("Invalid customer credentials. Redirecting to customer dashboard...");
+      showDashboard("customer-dashboard");
+    }
+
+  } else if (currentRole === "driver") {
+    const drivers = JSON.parse(localStorage.getItem("drivers") || "[]");
+    const match = drivers.find(d => d.email === email && d.password === password);
+
+    if (match && match.approved) {
+      alert(`Welcome Driver ${match.name}`);
+      showDashboard("driver-dashboard");
+    } else if (match && !match.approved) {
+      alert("Your account is pending approval.");
+    } else {
+      alert("Invalid driver credentials. Redirecting to customer dashboard...");
+      showDashboard("customer-dashboard");
+    }
+  }
+});
 
 
 
@@ -380,7 +421,7 @@ function showDashboard(id) {
   // Hide all dashboards
   document.getElementById("customer-dashboard").style.display = "none";
   document.getElementById("driver-dashboard").style.display = "none";
-  document.getElementById("admin-dashboard").style.display = "none";
+  document.getElementById("admin-dashboard").style.display = "block";
 
   // Load extras if admin
   if (id === "admin-dashboard") loadPendingDrivers();
@@ -391,4 +432,9 @@ function showDashboard(id) {
 
 
 
+document.getElementById("admin-login-btn").addEventListener("click", () => {
+  currentRole = "admin";
+  document.getElementById("login-form").style.display = "block";
+  document.getElementById("register-form").style.display = "none";
+});
 
