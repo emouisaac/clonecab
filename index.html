@@ -36,6 +36,14 @@
         <input type="password" id="login-password" placeholder="Password" required>
         <button type="submit">Login</button>
         <p>Don't have an account? <span id="show-register" style="color:blue; cursor:pointer;">Register</span></p>
+        <!-- Inside your login form -->
+        <p id="show-register" style="display:none; cursor: pointer; color: #007bff; text-align: center;">
+          
+        </p>
+
+        <p id="become-driver-link" style="display:none; cursor: pointer; color: #172ca2; text-align: center; font-weight: 700;">
+          Become a Driver
+        </p>
       </form>
 
       <form id="register-form" style="display:none">
@@ -105,6 +113,12 @@
       <input type="tel" id="d-phone" placeholder="Phone Number" required />
       <input type="text" id="d-license" placeholder="License Number" required />
       <input type="text" id="d-id" placeholder="National ID" required />
+      <!-- Add inside the #login-modal or somewhere visible -->
+      <p>
+        Want to earn with us? 
+        <span id="open-driver-register" style="color: #007bff; cursor: pointer;">Become a Driver</span>
+      </p>
+
       <button type="submit">Submit Registration</button>
     </form>
   </section>
