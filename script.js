@@ -13,6 +13,26 @@ const vehicleOptions = [
 
 
 
+// Show register form when 'Register' link is clicked
+document.getElementById("show-register").addEventListener("click", () => {
+  document.getElementById("login-form").style.display = "none";
+  document.getElementById("register-form").style.display = "block";
+});
+
+// Show login form when 'Login' link is clicked
+document.getElementById("show-login").addEventListener("click", () => {
+  document.getElementById("register-form").style.display = "none";
+  document.getElementById("login-form").style.display = "block";
+});
+
+// Show the driver registration form
+document.getElementById("open-driver-register").addEventListener("click", () => {
+  document.getElementById("driver-register").style.display = "block";  // Show the driver form
+  document.getElementById("login-modal").style.display = "none";       // Hide login modal
+});
+
+
+
 // Initialize Google Maps on page load
 function initMap() {
   const kampala = { lat: 0.3476, lng: 32.5825 };
