@@ -263,23 +263,40 @@ document.getElementById("menu").addEventListener("click", () => {
 
 let currentRole = ""; // Track selected role
 
-// When one of the login buttons is clicked, show the login form
+// Role selection
 document.getElementById("customer-login-btn").addEventListener("click", () => {
   currentRole = "customer";
   document.getElementById("login-form").style.display = "block";
+  document.getElementById("register-form").style.display = "none";
+  document.getElementById("show-register").style.display = "block"; // Show register option
 });
 
 document.getElementById("driver-login-btn").addEventListener("click", () => {
   currentRole = "driver";
   document.getElementById("login-form").style.display = "block";
+  document.getElementById("register-form").style.display = "none";
+  document.getElementById("show-register").style.display = "block"; // Show register option
 });
 
 document.getElementById("admin-login-btn").addEventListener("click", () => {
   currentRole = "admin";
   document.getElementById("login-form").style.display = "block";
+  document.getElementById("register-form").style.display = "none";
+  document.getElementById("show-register").style.display = "none"; // Hide for admin
 });
 
+// Register link click
+document.getElementById("show-register").addEventListener("click", () => {
+  document.getElementById("login-form").style.display = "none";
+  document.getElementById("register-form").style.display = "block";
+});
 
+// Login link click (from register form)
+document.getElementById("show-login").addEventListener("click", () => {
+  document.getElementById("register-form").style.display = "none";
+  document.getElementById("login-form").style.display = "block";
+});
+//ooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 
 
