@@ -58,143 +58,67 @@
         <section>
             <div id="map" style="width:100vw; height:calc(100vh - 140px); min-height:300px;"></div>
             <script>
-                function initMap() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                            const userLocation = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude
-                            };
-                            const map = new google.maps.Map(document.getElementById('map'), {
-                                center: userLocation,
-                                zoom: 16,
-                                disableDefaultUI: true
-                            });
-                            new google.maps.Marker({
-                                position: userLocation,
-                                map: map,
-                                title: "You are here"
-                            });
-                        }, function() {
-                            handleLocationError(true);
+            // Always use device location for calculations
+            function initMap() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        window.userLocation = userLocation; // Expose globally
+                        window.map = new google.maps.Map(document.getElementById('map'), {
+                            center: userLocation,
+                            zoom: 16,
+                            disableDefaultUI: true
                         });
-                    } else {
-                        handleLocationError(false);
-                    }
+                        new google.maps.Marker({
+                            position: userLocation,
+                            map: window.map,
+                            title: "You are here"
+                        });
+                        if (window.directionsRenderer) window.directionsRenderer.setMap(window.map);
+                    }, function() {
+                        handleLocationError(true);
+                    });
+                } else {
+                    handleLocationError(false);
                 }
+            }
 
-                function handleLocationError(browserHasGeolocation) {
-                    document.getElementById('map').innerHTML =
-                        browserHasGeolocation
-                            ? "Error: The Geolocation service failed."
-                            : "Error: Your browser doesn't support geolocation.";
-                }
+            function handleLocationError(browserHasGeolocation) {
+                document.getElementById('map').innerHTML =
+                    browserHasGeolocation
+                        ? "Error: The Geolocation service failed."
+                        : "Error: Your browser doesn't support geolocation.";
+            }
             </script>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkcQMADr6TwIf-r_KnupVgPkpcADbfaEA&callback=initMap"></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkcQMADr6TwIf-r_KnupVgPkpcADbfaEA&callback=initMap&libraries=places"></script>
             <style>
-                #map {
-                    position: relative;
-                    top: 0;
-                    left: 0;
-                    z-index: 1;
-                }
-                .header, footer, .footer-fixed {
-                    z-index: 2;
-                    position: relative;
-                }
-                .footer-fixed {
-                    position: fixed;
-                    bottom: 0;
-                    left: 0;
-                    width: 100vw;
-                }
-                body, html {
-                    margin: 0;
-                    padding: 0;
-                    height: 100%;
-                    overflow-x: hidden;
-                }
-            </style>
-            
-                         
-            <style>
-            .choosetrip {
-                background: #fff;
-                border-radius: 18px;
-                box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-                padding: 24px 18px 18px 18px;
-                max-width: 4000px;
-                margin: 0 auto;
+            #map {
                 position: relative;
-                z-index: 20;
-                text-align: left;
+                top: 0;
+                left: 0;
+                z-index: 1;
             }
-            .choosetrip h3 {
-                font-family: 'Poppins', sans-serif;
-                font-weight: 600;
-                margin-bottom: 18px;
-                color: #222;
-                font-size: 1.3rem;
+            .header, footer, .footer-fixed {
+                z-index: 2;
+                position: relative;
             }
-            .cabs {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                background: #f5f7fa;
-                border-radius: 10px;
-                padding: 12px 18px;
-                margin-bottom: 12px;
-                font-size: 1.1rem;
-                font-family: 'Inter', sans-serif;
-                cursor: pointer;
-                transition: background 0.2s, box-shadow 0.2s;
-                border: 2px solid transparent;
-                user-select: none;
+            .footer-fixed {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100vw;
             }
-            .cabs.selected, .cabs:active {
-                background: #e3f0ff;
-                border-color: #007bff;
-                box-shadow: 0 2px 8px rgba(0,123,255,0.08);
-            }
-            .cabs:last-child {
-                margin-bottom: 0;
-            }
-            .button1 {
-                width: 100%;
-                margin-top: 18px;
-                position: static;
-                transform: none;
-                left: unset;
-                bottom: unset;
-                z-index: 20;
-            }
-            .button1 button {
-                width: 100%;
-                padding: 12px 0;
-                background: #007bff;
-                color: #fff;
-                border: none;
-                border-radius: 8px;
-                font-size: 1.1rem;
-                font-family: 'Poppins', sans-serif;
-                font-weight: 500;
-                box-shadow: 0 2px 8px rgba(0,123,255,0.08);
-                cursor: pointer;
-                transition: background 0.2s;
-            }
-            .button1 button:disabled {
-                background: #b0c4de;
-                cursor: not-allowed;
-            }
-            @media (max-width: 400px) {
-                .choosetrip {
-                    max-width: 98vw;
-                    padding: 12px 4vw 12px 4vw;
-                }
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow-x: hidden;
             }
             </style>
             <!-- Where To Section -->
-            <!-- Overlay Where To Section -->
             <div class="choosetrip-overlay" style="top: 180px; bottom: auto; z-index: 1003;">
                 <h3>Where to?</h3>
                 <form id="whereToForm" autocomplete="off">
@@ -252,12 +176,11 @@
                             // Get place details and trigger form submit
                             placesService.getDetails({ placeId: pred.place_id }, function(place, status) {
                                 if (status === google.maps.places.PlacesServiceStatus.OK && place.geometry) {
-                                    // Set destinationLatLng and show directions
                                     destinationLatLng = {
                                         lat: place.geometry.location.lat(),
                                         lng: place.geometry.location.lng()
                                     };
-                                    // Get user location and show directions
+                                    // Always get user location from device
                                     if (navigator.geolocation) {
                                         navigator.geolocation.getCurrentPosition(function(position) {
                                             userLocation = {
@@ -301,6 +224,7 @@
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
                         };
+                        window.userLocation = userLocation; // Expose globally
                         window.map = new google.maps.Map(document.getElementById('map'), {
                             center: userLocation,
                             zoom: 16,
@@ -320,32 +244,79 @@
                 }
             };
             </script>
-            <!-- Google Maps Places API (add &libraries=places) -->
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkcQMADr6TwIf-r_KnupVgPkpcADbfaEA&callback=initMap&libraries=places"></script>
 
             <!-- Overlay Cab Selection Section -->
             <style>
+            .choosetrip-overlay {
+                position: fixed;
+                left: 50%;
+                bottom: 70px; /* Above the footer */
+                transform: translateX(-50%);
+                z-index: 1002;
+                width: 100%;
+                background: #ffffff;
+                border-radius: 18px;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+                padding: 24px 18px 18px 18px;
+                margin: 0;
+                text-align: left;
+            }
+            @media (max-width: 500px) {
                 .choosetrip-overlay {
-                    position: fixed;
-                    left: 50%;
-                    bottom: 70px; /* Above the footer */
-                    transform: translateX(-50%);
-                    z-index: 1002;
-                    width: 100%;
-                    
-                    background: #ffffff;
-                    border-radius: 18px;
-                    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-                    padding: 24px 18px 18px 18px;
-                    margin: 0;
-                    text-align: left;
+                    max-width: 98vw;
+                    padding: 12px 4vw 12px 4vw;
                 }
-                @media (max-width: 500px) {
-                    .choosetrip-overlay {
-                        max-width: 98vw;
-                        padding: 12px 4vw 12px 4vw;
-                    }
-                }
+            }
+            .cabs {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: #f5f7fa;
+                border-radius: 10px;
+                padding: 12px 18px;
+                margin-bottom: 12px;
+                font-size: 1.1rem;
+                font-family: 'Inter', sans-serif;
+                cursor: pointer;
+                transition: background 0.2s, box-shadow 0.2s;
+                border: 2px solid transparent;
+                user-select: none;
+            }
+            .cabs.selected, .cabs:active {
+                background: #e3f0ff;
+                border-color: #007bff;
+                box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+            }
+            .cabs:last-child {
+                margin-bottom: 0;
+            }
+            .button1 {
+                width: 100%;
+                margin-top: 18px;
+                position: static;
+                transform: none;
+                left: unset;
+                bottom: unset;
+                z-index: 20;
+            }
+            .button1 button {
+                width: 100%;
+                padding: 12px 0;
+                background: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-size: 1.1rem;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 500;
+                box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .button1 button:disabled {
+                background: #b0c4de;
+                cursor: not-allowed;
+            }
             </style>
             <div class="choosetrip-overlay">
                 <h3>Choose a Trip</h3>
@@ -382,10 +353,20 @@
                 boadz: 1500
             };
 
-            // Update price badges
-            for (const [id, price] of Object.entries(cabPrices)) {
-                const badge = document.getElementById(id + '-price');
-                if (badge) badge.textContent = `UGX ${price}/km`;
+            // Only show final price in cabs div
+            function updateCabPrices() {
+                for (const [id, price] of Object.entries(cabPrices)) {
+                    const badge = document.getElementById(id + '-price');
+                    if (badge && tripDistance) {
+                        badge.textContent = `UGX ${formatMoney(Math.round(price * tripDistance))}`;
+                    } else if (badge) {
+                        badge.textContent = '';
+                    }
+                }
+            }
+
+            function formatMoney(num) {
+                return num.toLocaleString('en-UG');
             }
 
             let selectedCabId = null;
@@ -411,23 +392,7 @@
             });
 
             // Handle destination input and calculate distance
-            let userLocation = null;
             let destinationLatLng = null;
-
-            function updateCabPrices() {
-                for (const [id, price] of Object.entries(cabPrices)) {
-                    const badge = document.getElementById(id + '-price');
-                    if (badge && tripDistance) {
-                        badge.textContent = `UGX ${formatMoney(Math.round(price * tripDistance))} (${price}/km)`;
-                    } else if (badge) {
-                        badge.textContent = `UGX ${price}/km`;
-                    }
-                }
-            }
-
-            function formatMoney(num) {
-                return num.toLocaleString('en-UG');
-            }
 
             function showPopup(msg) {
                 const popup = document.getElementById('popupNotification');
@@ -440,10 +405,10 @@
                 e.preventDefault();
                 const dest = document.getElementById('destinationInput').value;
                 if (!dest) return;
-                // Get user's current location
+                // Always get user's current location from device
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(position) {
-                        userLocation = {
+                        const userLocation = {
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
                         };
@@ -524,26 +489,25 @@
             });
             </script>
 
-       <footer>
-        <div class="footer-fixed">
-            <div class="footer-nav">
+           <footer>
+            <div class="footer-fixed">
+                <div class="footer-nav">
                 <a href="#" class="footer-item">
-                    <i class="fas fa-concierge-bell"></i>
-                    <span>Services</span>
+                <i class="fas fa-concierge-bell"></i>
+                <span>Services</span>
                 </a>
                 <a href="#" class="footer-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Activity</span>
+                <i class="fas fa-chart-line"></i>
+                <span>Activity</span>
                 </a>
                 <a href="#" class="footer-item">
-                    <i class="fas fa-user-circle"></i>
-                    <span>Account</span>
+                <i class="fas fa-user-circle"></i>
+                <span>Account</span>
                 </a>
+                </div>
             </div>
-        </div>
-       </footer>
-
-    </section>
+           </footer>
+        </section>
 
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
