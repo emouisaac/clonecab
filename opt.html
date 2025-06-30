@@ -125,25 +125,35 @@
             <!-- Overlay Cab Selection Section -->
             <style>
             .choosetrip-overlay {
-                position: fixed;
+                position: absolute;
+                max-height: 50vh;
+                overflow-y: auto;
+                touch-action: pan-y;
+                cursor: grab;
                 left: 50%;
-                bottom: 70px; /* Above the footer */
+                bottom: 50px; /* Initial position above the footer */
                 transform: translateX(-50%);
-                z-index: 1002;
+                z-index: 1;
                 width: 100%;
                 background: #ffffff;
-                border-radius: 18px;
+                border-top-left-radius: 20px;
+                border-top-right-radius: 20px;
                 box-shadow: 0 4px 24px rgba(0,0,0,0.12);
                 padding: 24px 18px 18px 18px;
                 margin: 0;
                 text-align: left;
+                touch-action: none; /* Prevent scrolling while dragging */
+                transition: bottom 0.2s cubic-bezier(.4,2,.6,1);
+                user-select: none;
             }
+            
             @media (max-width: 500px) {
                 .choosetrip-overlay {
                     max-width: 98vw;
                     padding: 12px 4vw 12px 4vw;
                 }
             }
+
             .cabs {
                 display: flex;
                 align-items: center;
@@ -158,6 +168,7 @@
                 transition: background 0.2s, box-shadow 0.2s;
                 border: 2px solid transparent;
                 user-select: none;
+                scroll-margin-bottom: 10px;
             }
             .cabs.selected, .cabs:active {
                 background: #e3f0ff;
@@ -167,15 +178,7 @@
             .cabs:last-child {
                 margin-bottom: 0;
             }
-            .button1 {
-                width: 100%;
-                margin-top: 18px;
-                position: static;
-                transform: none;
-                left: unset;
-                bottom: unset;
-                z-index: 20;
-            }
+            
             .button1 button {
                 width: 100%;
                 padding: 12px 0;
@@ -189,13 +192,19 @@
                 box-shadow: 0 2px 8px rgba(0,123,255,0.08);
                 cursor: pointer;
                 transition: background 0.2s;
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 60px;
+                z-index: 100;
+                box-shadow: 0 2px 12px rgba(0,0,0,0.08);
             }
             .button1 button:disabled {
                 background: #b0c4de;
                 cursor: not-allowed;
             }
             </style>
-            <div class="choosetrip-overlay">
+           <div class="choosetrip-overlay">
                 <h3>Where to?</h3>
                 <form id="whereToForm" autocomplete="off">
                     <input type="text" id="destinationInput" class="form-control mb-2" placeholder="Enter destination" required style="font-size:1.1rem;" autocomplete="off">
@@ -221,10 +230,12 @@
                     <i class="fas fa-motorcycle fa-2x mb-1" style="color:#dc3545;"></i>
                     Boda <span class="badge bg-light text-dark ms-auto" id="boadz-price"></span>
                 </div>
-                <div class="button1" id="buttonz">
-                    <button id="cabOptBtn" disabled>Choose a Cab</button>
-                </div>
+                
             </div>
+            <div class="button1" id="buttonz">
+                <button id="cabOptBtn" disabled>Choose a Cab</button>
+            </div>
+
 
             <!-- Popup Notification -->
             <div id="popupNotification" style="display:none;position:fixed;top:30px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:18px 32px;border-radius:10px;z-index:9999;font-size:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,0.15);"></div>
