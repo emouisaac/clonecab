@@ -1,246 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Uber Clone</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="admin.css">
-  <script defer src="script.js"></script>
-  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkcQMADr6TwIf-r_KnupVgPkpcADbfaEA&callback=initMap"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CabLink</title>
+    <meta name="description" content="We take you right to your destination.">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="app.py">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mm.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" href="images/icon.jpeg" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="icon" href="image/0627 (1).png">
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <h1>Uber</h1>
-    <!-- Navbar icon -->
-    <span id="menu" class="menu-icon">☰</span>
-    <button id="logout-btn" style="display:none">Logout</button>
-  </header>
+    <section class="map">
+        <!-- Live Map Embed (using OpenStreetMap via Leaflet.js) -->
+        <!-- Google Maps Embed API -->
+        <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d126743.72640972436!2d32.5825209!3d0.3475964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sug!4v1710000000000!5m2!1sen!2sug"
+                width="100%"
+                height="100%"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    <!-- Navigation -->
+        <section class="header">
+            <nav>
+                <a href="index.html"><img src="image/0627 (1).png" alt=""></a>
+                <div class="nav-links">
+                    <i class="fas fa-times" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="charts">Payment</a></li>
+                        <li><a href="">History</a></li>
+                        <li><a href="">Contact Us</a></li>
+                    </ul>
+                </div>
+                <i class="fas fa-bars" onclick="showMenu()"></i>
 
+            </nav>
+
+        </section>
+        
+        <div class="blank">
+
+        </div>
+
+
+        <!------------------------Where to-->
+        
+        <section>
+                <div class="trip-form" style="margin: 24px auto 0 auto; max-width: 400px;">
+                    <form id="destinationForm" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="whereTo" class="form-label">Where to?</label>
+                            <input type="text" class="form-control" id="whereTo" placeholder="Enter destination" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" id="showDirectionBtn" >Let'S Go</button>
+                        <div id="priceEstimate" style="margin-top:12px;font-weight:500;color:#007bff;"></div>
+                    </form>
+                </div>
+                <style>
+                .trip-form {
+                    background: #fff;
+                    border-radius: 14px;
+                    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+                    padding: 18px 16px 12px 16px;
+                    margin-bottom: 18px;
+                }
+                #priceEstimate {
+                    min-height: 24px;
+                }
+                </style>
+                
+            </section>
+
+
+        <!---------------------------Pick Aride-->
+        <section class="pick-ride">
+            <h2>Pick your ride</h2>
+            <div class="row" style="display: flex;">
+                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
+                    <h3>Cab X</h3>
+                    <div class="ride-img-anim">
+                        <img src="image/4sit.png" alt="Four Seater" class="ride-img" data-index="0">
+                    </div>
+                    <p>Fair Price</p>
+                </div>
+                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
+                    <h3>Cab XL</h3>
+                    <div class="ride-img-anim">
+                        <img src="image/6sita.png" alt="Six Seater" class="ride-img" data-index="1">
+                    </div>
+                    <p>Moderate Price</p>
+                </div>
+            </div>
+            <div class="row" style="display: flex;">
+                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
+                    <h3>Cab VIP</h3>
+                    <div class="ride-img-anim">
+                        <img src="image/vip.png" alt="Corporate" class="ride-img" data-index="2">
+                    </div>
+                    <p>Corporate Price</p>
+                </div>
+                
+                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
+                    
+                    <h3>Boda</h3>
+                    <div class="ride-img-anim">
+                        <img src="image/boda.png" alt="Boda" class="ride-img" data-index="3">
+                    </div>
+                    <p>Quick ride</p>
+                </div>
+            </div>
+        </section>
+        <style>
+
+           
+        .ride-img-anim {
+            position: relative;
+            width: 100%;
+            height: 60px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            justify-content: center;
+        }
+        .ride-img-anim img.ride-img {
+            height: 60px;
+            width: auto;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            transition: transform 0.5s, opacity 0.5s;
+            z-index: 1;
+        }
+        .ride-img-anim img.ride-img.slide-active {
+            animation: slideRideImgOneAtATime 2.5s linear 1;
+            z-index: 2;
+        }
+        .ride-img-anim img.ride-img.scale-out {
+            animation: scaleOutPause 0.7s linear 1;
+            z-index: 3;
+        }
+        .ride-img-anim img.ride-img.looping {
+            animation: subtleLoop 2s ease-in-out infinite alternate;
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        @keyframes slideRideImgOneAtATime {
+            0% {
+                left: 100%;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            15% {
+                left: 60%;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+            40% {
+                left: 50%;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            60% {
+                left: 50%;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            85% {
+                left: -60%;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+            100% {
+                left: -100%;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        @keyframes scaleOutPause {
+            0% {
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.7);
+                opacity: 0.5;
+            }
+        }
+        @keyframes subtleLoop {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.07);
+                opacity: 1;
+            }
+        }
+        </style>
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rideImgs = Array.from(document.querySelectorAll('.ride-img'));
+            let current = 0;
+            let total = rideImgs.length;
+
+            function resetClasses() {
+                rideImgs.forEach((img, idx) => {
+                    img.classList.remove('slide-active', 'scale-out', 'looping');
+                    if (idx !== current) {
+                        img.classList.add('looping');
+                    }
+                });
+            }
+
+            function animateCurrent() {
+                resetClasses();
+                const img = rideImgs[current];
+                img.classList.remove('looping');
+                img.classList.add('slide-active');
+                setTimeout(() => {
+                    img.classList.remove('slide-active');
+                    img.classList.add('scale-out');
+                    setTimeout(() => {
+                        img.classList.remove('scale-out');
+                        current = (current + 1) % total;
+                        animateCurrent();
+                    }, 700); // scale out duration
+                }, 1800); // slide duration before scale out
+            }
+
+            animateCurrent();
+        });
+        </script>
+
+
+       <footer>
+        
+        
+        <div class="footer-fixed">
+            <div class="footer-nav">
+                <a href="#" class="footer-item">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Services</span>
+                </a>
+                <a href="#" class="footer-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Activity</span>
+                </a>
+                <a href="#" class="footer-item">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Account</span>
+                </a>
+            </div>
+        </div>
+       </footer>
+
+    </section>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/crypto-ticker.js') }}"></script>
+        <script src="script.js"></script>
+
+        <script>
+            // Initialize AOS
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+
+            function showMenu() {
+                document.querySelector('.nav-links').style.right = "0";
+            }
+
+            function hideMenu() {
+                document.querySelector('.nav-links').style.right = "-200px";
+            }
+        </script>
     
-
-
-  <!-- Login Modal -->
-  <section id="login-modal" style="display:none">
-    <div class="login-wrapper">
-      <h2>Select Login Type</h2>
-      <div class="login-buttons">
-        <button id="customer-login-btn">Customer Login</button>
-        <button id="driver-login-btn">Driver Login</button>
-        <button id="admin-login-btn">Admin Login</button>
-        <button id="open-driver-register">Become a Driver</button>
-      </div>
-      <form id="login-form" style="display:none">
-        <input type="email" id="login-email" placeholder="Email" required>
-        <input type="password" id="login-password" placeholder="Password" required>
-        <button type="submit">Login</button>
-        <p>Don't have an account? <span id="show-register" style="color:blue; cursor:pointer;">Register</span></p>
-        <!-- Inside your login form -->
-        <p id="show-register" style="display:none; cursor: pointer; color: #007bff; text-align: center;">
-          
-        </p>
-
-        <p id="become-driver-link" style="display:none; cursor: pointer; color: #172ca2; text-align: center; font-weight: 700;">
-          Become a Driver
-        </p>
-      </form>
-
-      <form id="register-form" style="display:none">
-        <input type="text" id="register-name" placeholder="Full Name" required>
-        <input type="email" id="register-email" placeholder="Email" required>
-        <input type="password" id="register-password" placeholder="Password" required>
-        <button type="submit">Register</button>
-        <p>Already have an account? <span id="show-login" style="color:blue; cursor:pointer;">Login</span></p>
-      </form>
-    </div>
-  </section>
-
-  <!-- Customer Dashboard (Home Page) -->
-  <main id="customer-dashboard" style="display:none">
-    <section class="search-box">
-      <input type="text" id="destination" placeholder="Where to?" />
-
-    </section>
-
-    <section class="previous-trips">
-      <h2>Previous Trips</h2>
-      <ul id="trip-list"></ul>
-    </section>
-
-    <section class="trip-options">
-      <h2>Choose Your Ride</h2>
-      <div class="scrollable-options" id="ride-types">
-        <div class="ride-option" data-type="Boda">Boda</div>
-        <div class="ride-option" data-type="Uber A">Uber A</div>
-        <div class="ride-option" data-type="Uber B">Uber B</div>
-        <div class="ride-option" data-type="Uber L">Uber L</div>
-        <div class="option" data-type="courier">Courier</div>
-      </div>
-    </section>
-
-    <section id="map-display">
-      <div id="map" style="width: 100%; height: 300px;"></div>
-      <div id="vehicle-options">
-        <h3>Available Vehicles & Prices</h3>
-        <ul>
-          <li>Boda - UGX 2,000</li>
-          <li>Uber A - UGX 3,500</li>
-          <li>Uber B - UGX 4,000</li>
-          <li>Uber L - UGX 5,500</li>
-        </ul>
-      </div>
-    
-  
-      <div id="ride-summary" style="display: none;">
-        <p id="ride-info"></p>
-        <button id="confirm-ride">Confirm Ride</button>
-      </div>
-    </section>
-
-
-
-    <button id="confirm-ride">Choose</button>
-  </main>
-
-  <!-- Driver Dashboard -->
-
-  <section id="driver-register" style="display:none">
-    <form id="driver-register-form">
-      <input type="text" id="d-name" placeholder="Full Name" required />
-      <input type="email" id="d-email" placeholder="Email" required />
-      <input type="password" id="d-password" placeholder="Password" required />
-      <input type="tel" id="d-phone" placeholder="Phone Number" required />
-      <input type="text" id="d-license" placeholder="License Number" required />
-      <input type="text" id="d-id" placeholder="National ID" required />
-      <!-- Add inside the #login-modal or somewhere visible -->
-      <p>
-        Want to earn with us? 
-        <span id="open-driver-register" style="color: #007bff; cursor: pointer;">Become a Driver</span>
-      </p>
-
-      <button type="submit">Submit Registration</button>
-    </form>
-  </section>
-
-
-  <section id="driver-dashboard" style="display:none">
-    <header>
-      <button id="toggle-status">Go Online</button>
-    </header>
-    <div id="driver-map" style="width: 100%; height: 400px;"></div>
-    <nav class="driver-nav">
-      <ul>
-        <li>Account</li>
-        <li>Wallet</li>
-        <li>Earnings</li>
-        <li>Miles</li>
-        <li>Ride History</li>
-        <li>Contact Us</li>
-        <li>My Issues</li>
-      </ul>
-    </nav>
-    <footer>
-      <div>Earnings: $0</div>
-      <div>Wallet: $0</div>
-      <div>Acceptance: 100%</div>
-      <div>Rating: 5.0</div>
-      <div>Cancellation: 0%</div>
-      <nav>
-        <span>Mileage</span>
-        <span>Service</span>
-        <span>Destinations</span>
-        <span>Settings</span>
-      </nav>
-    </footer>
-  </section>
-
-  <!-- Admin Dashboard -->
-  <section id="admin-dashboard" style="display:none">
-    <header>
-      <h1>Admin Panel</h1>
-    </header>
-    <main>
-      <section id="notifications-section">
-        <h2>Notifications</h2>
-        <div id="notifications">No new notifications</div>
-      </section>
-
-      <section class="admin-controls">
-        <h3>Pending Driver Approvals</h3>
-        <ul id="pending-drivers"></ul>
-      </section>
-
-
-
-      <section id="driver-approvals-section">
-        <h2>Pending Driver Approvals</h2>
-        <ul id="pending-drivers-list">
-          <!-- Pending drivers will be dynamically listed here -->
-        </ul>
-      </section>
-
-      <section id="fare-commission-section">
-        <h2>Edit Fare & Commission</h2>
-        <form id="fare-commission-form">
-          <label>
-            Destination Fare ($): 
-            <input type="number" id="fare-input" min="0" step="0.01" required />
-          </label>
-          <label>
-            Commission (%): 
-            <input type="number" id="commission-input" min="0" max="100" step="0.1" required />
-          </label>
-          <button type="submit">Update</button>
-        </form>
-      </section>
-
-      <section id="currency-section">
-        <h2>Supported Currencies</h2>
-        <select id="currency-select">
-          <option value="usd">USD</option>
-          <option value="ugx">UGX</option>
-          <option value="ksh">KSH</option>
-        </select>
-      </section>
-    </main>
-  
-
-    <footer>
-      <p>Uber Clone Admin Dashboard &copy; 2025</p>
-    </footer>
-  </section>
-  
-
-  <!-- Footer -->
-  <footer>
-    <nav>
-      <span>Home</span>
-      <span>Services</span>
-      <span>Activity</span>
-      <span>Account</span>
-    </nav>
-  </footer>
-
-
-
-
-  <section id="driver-register" style="display:none">
-  <h2>Driver Registration</h2>
-    <form id="driver-register-form">
-      <input type="text" id="d-name" placeholder="Full Name" required />
-      <input type="email" id="d-email" placeholder="Email" required />
-      <input type="password" id="d-password" placeholder="Password" required />
-      <input type="tel" id="d-phone" placeholder="Phone Number" required />
-      <input type="text" id="d-license" placeholder="License Number" required />
-      <input type="text" id="d-id" placeholder="National ID" required />
-      <button type="submit">Submit Registration</button>
-    </form>
-  </section>
-
-
-  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkcQMADr6TwIf-r_KnupVgPkpcADbfaEA&callback=initMap"></script>
-
-
 </body>
 </html>
