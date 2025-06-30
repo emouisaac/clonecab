@@ -34,20 +34,7 @@
     <link rel="icon" href="image/0627 (1).png">
 </head>
 <body>
-    <section class="map">
-        <!-- Live Map Embed (using OpenStreetMap via Leaflet.js) -->
-        <!-- Google Maps Embed API -->
-        <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d126743.72640972436!2d32.5825209!3d0.3475964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sug!4v1710000000000!5m2!1sen!2sug"
-                width="100%"
-                height="100%"
-                style="border:0;"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-        </div>
+   
     <!-- Navigation -->
         <section class="header">
             <nav>
@@ -66,209 +53,453 @@
             </nav>
 
         </section>
-        
-        <div class="blank">
 
-        </div>
-
-
-        <!------------------------Where to-->
-        
+        <!------------------------------map-->
         <section>
-                <div class="trip-form" style="margin: 24px auto 0 auto; max-width: 400px;">
-                    <form id="destinationForm" autocomplete="off">
-                        <div class="mb-3">
-                            <label for="whereTo" class="form-label">Where to?</label>
-                            <input type="text" class="form-control" id="whereTo" placeholder="Enter destination" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100" id="showDirectionBtn" >Let'S Go</button>
-                        <div id="priceEstimate" style="margin-top:12px;font-weight:500;color:#007bff;"></div>
-                    </form>
-                </div>
-                <style>
-                .trip-form {
-                    background: #fff;
-                    border-radius: 14px;
-                    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-                    padding: 18px 16px 12px 16px;
-                    margin-bottom: 18px;
+            <div id="map" style="width:100vw; height:calc(100vh - 140px); min-height:300px;"></div>
+            <script>
+                function initMap() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            const userLocation = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            const map = new google.maps.Map(document.getElementById('map'), {
+                                center: userLocation,
+                                zoom: 16,
+                                disableDefaultUI: true
+                            });
+                            new google.maps.Marker({
+                                position: userLocation,
+                                map: map,
+                                title: "You are here"
+                            });
+                        }, function() {
+                            handleLocationError(true);
+                        });
+                    } else {
+                        handleLocationError(false);
+                    }
                 }
-                #priceEstimate {
-                    min-height: 24px;
+
+                function handleLocationError(browserHasGeolocation) {
+                    document.getElementById('map').innerHTML =
+                        browserHasGeolocation
+                            ? "Error: The Geolocation service failed."
+                            : "Error: Your browser doesn't support geolocation.";
                 }
-                </style>
-                
-            </section>
-
-
-        <!---------------------------Pick Aride-->
-        <section class="pick-ride">
-            <h2>Pick your ride</h2>
-            <div class="row" style="display: flex;">
-                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
-                    <h3>Cab X</h3>
-                    <div class="ride-img-anim">
-                        <img src="image/4sit.png" alt="Four Seater" class="ride-img" data-index="0">
-                    </div>
-                    <p>Fair Price</p>
-                </div>
-                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
-                    <h3>Cab XL</h3>
-                    <div class="ride-img-anim">
-                        <img src="image/6sita.png" alt="Six Seater" class="ride-img" data-index="1">
-                    </div>
-                    <p>Moderate Price</p>
-                </div>
+            </script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkcQMADr6TwIf-r_KnupVgPkpcADbfaEA&callback=initMap"></script>
+            <style>
+                #map {
+                    position: relative;
+                    top: 0;
+                    left: 0;
+                    z-index: 1;
+                }
+                .header, footer, .footer-fixed {
+                    z-index: 2;
+                    position: relative;
+                }
+                .footer-fixed {
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    width: 100vw;
+                }
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                    overflow-x: hidden;
+                }
+            </style>
+            
+                         
+            <style>
+            .choosetrip {
+                background: #fff;
+                border-radius: 18px;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+                padding: 24px 18px 18px 18px;
+                max-width: 4000px;
+                margin: 0 auto;
+                position: relative;
+                z-index: 20;
+                text-align: left;
+            }
+            .choosetrip h3 {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                margin-bottom: 18px;
+                color: #222;
+                font-size: 1.3rem;
+            }
+            .cabs {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: #f5f7fa;
+                border-radius: 10px;
+                padding: 12px 18px;
+                margin-bottom: 12px;
+                font-size: 1.1rem;
+                font-family: 'Inter', sans-serif;
+                cursor: pointer;
+                transition: background 0.2s, box-shadow 0.2s;
+                border: 2px solid transparent;
+                user-select: none;
+            }
+            .cabs.selected, .cabs:active {
+                background: #e3f0ff;
+                border-color: #007bff;
+                box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+            }
+            .cabs:last-child {
+                margin-bottom: 0;
+            }
+            .button1 {
+                width: 100%;
+                margin-top: 18px;
+                position: static;
+                transform: none;
+                left: unset;
+                bottom: unset;
+                z-index: 20;
+            }
+            .button1 button {
+                width: 100%;
+                padding: 12px 0;
+                background: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-size: 1.1rem;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 500;
+                box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .button1 button:disabled {
+                background: #b0c4de;
+                cursor: not-allowed;
+            }
+            @media (max-width: 400px) {
+                .choosetrip {
+                    max-width: 98vw;
+                    padding: 12px 4vw 12px 4vw;
+                }
+            }
+            </style>
+            <!-- Where To Section -->
+            <div class="choosetrip" style="margin-bottom:18px;">
+                <h3>Where to?</h3>
+                <form id="whereToForm" autocomplete="off">
+                    <input type="text" id="destinationInput" class="form-control mb-2" placeholder="Enter destination" required style="font-size:1.1rem;" autocomplete="off">
+                    <div id="autocomplete-list" class="list-group" style="position:relative;z-index:1000;"></div>
+                    <button type="submit" class="btn btn-primary w-100" style="margin-top:8px;">Set Destination</button>
+                </form>
+                <div id="distanceInfo" style="margin-top:10px; font-size:1rem; color:#007bff;"></div>
             </div>
-            <div class="row" style="display: flex;">
-                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
-                    <h3>Cab VIP</h3>
-                    <div class="ride-img-anim">
-                        <img src="image/vip.png" alt="Corporate" class="ride-img" data-index="2">
-                    </div>
-                    <p>Corporate Price</p>
-                </div>
-                
-                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
-                    
-                    <h3>Boda</h3>
-                    <div class="ride-img-anim">
-                        <img src="image/boda.png" alt="Boda" class="ride-img" data-index="3">
-                    </div>
-                    <p>Quick ride</p>
-                </div>
-            </div>
-        </section>
-        <style>
+            <script>
+            let autocompleteService, placesService, directionsService, directionsRenderer;
+            let mapInstance = null;
 
-           
-        .ride-img-anim {
-            position: relative;
-            width: 100%;
-            height: 60px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            justify-content: center;
-        }
-        .ride-img-anim img.ride-img {
-            height: 60px;
-            width: auto;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            transition: transform 0.5s, opacity 0.5s;
-            z-index: 1;
-        }
-        .ride-img-anim img.ride-img.slide-active {
-            animation: slideRideImgOneAtATime 2.5s linear 1;
-            z-index: 2;
-        }
-        .ride-img-anim img.ride-img.scale-out {
-            animation: scaleOutPause 0.7s linear 1;
-            z-index: 3;
-        }
-        .ride-img-anim img.ride-img.looping {
-            animation: subtleLoop 2s ease-in-out infinite alternate;
-            opacity: 0.7;
-            z-index: 1;
-        }
+            // Wait for Google Maps to load
+            function initAutocompleteFeatures() {
+                autocompleteService = new google.maps.places.AutocompleteService();
+                placesService = new google.maps.places.PlacesService(document.createElement('div'));
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: false });
 
-        @keyframes slideRideImgOneAtATime {
-            0% {
-                left: 100%;
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(1);
+                // Attach to map if available
+                if (window.map) {
+                    directionsRenderer.setMap(window.map);
+                    mapInstance = window.map;
+                } else {
+                    // Try to get map after a short delay
+                    setTimeout(() => {
+                        if (window.map) {
+                            directionsRenderer.setMap(window.map);
+                            mapInstance = window.map;
+                        }
+                    }, 1000);
+                }
             }
-            15% {
-                left: 60%;
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.05);
-            }
-            40% {
-                left: 50%;
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1);
-            }
-            60% {
-                left: 50%;
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1);
-            }
-            85% {
-                left: -60%;
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.05);
-            }
-            100% {
-                left: -100%;
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-        @keyframes scaleOutPause {
-            0% {
-                transform: translate(-50%, -50%) scale(1.1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(0.7);
-                opacity: 0.5;
-            }
-        }
-        @keyframes subtleLoop {
-            0% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.07);
-                opacity: 1;
-            }
-        }
-        </style>
-        <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const rideImgs = Array.from(document.querySelectorAll('.ride-img'));
-            let current = 0;
-            let total = rideImgs.length;
 
-            function resetClasses() {
-                rideImgs.forEach((img, idx) => {
-                    img.classList.remove('slide-active', 'scale-out', 'looping');
-                    if (idx !== current) {
-                        img.classList.add('looping');
+            window.addEventListener('load', initAutocompleteFeatures);
+
+            const destInput = document.getElementById('destinationInput');
+            const autocompleteList = document.getElementById('autocomplete-list');
+
+            destInput.addEventListener('input', function() {
+                const val = this.value;
+                autocompleteList.innerHTML = '';
+                if (!val || !autocompleteService) return;
+                autocompleteService.getPlacePredictions({ input: val }, function(predictions, status) {
+                    if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) return;
+                    predictions.forEach(pred => {
+                        const item = document.createElement('a');
+                        item.className = 'list-group-item list-group-item-action';
+                        item.textContent = pred.description;
+                        item.style.cursor = 'pointer';
+                        item.onclick = function() {
+                            destInput.value = pred.description;
+                            autocompleteList.innerHTML = '';
+                            // Get place details and trigger form submit
+                            placesService.getDetails({ placeId: pred.place_id }, function(place, status) {
+                                if (status === google.maps.places.PlacesServiceStatus.OK && place.geometry) {
+                                    // Set destinationLatLng and show directions
+                                    destinationLatLng = {
+                                        lat: place.geometry.location.lat(),
+                                        lng: place.geometry.location.lng()
+                                    };
+                                    // Get user location and show directions
+                                    if (navigator.geolocation) {
+                                        navigator.geolocation.getCurrentPosition(function(position) {
+                                            userLocation = {
+                                                lat: position.coords.latitude,
+                                                lng: position.coords.longitude
+                                            };
+                                            showDirections(userLocation, destinationLatLng);
+                                        });
+                                    }
+                                }
+                            });
+                        };
+                        autocompleteList.appendChild(item);
+                    });
+                });
+            });
+
+            // Hide autocomplete on blur (with delay for click)
+            destInput.addEventListener('blur', function() {
+                setTimeout(() => { autocompleteList.innerHTML = ''; }, 200);
+            });
+
+            function showDirections(origin, destination) {
+                if (!directionsService || !directionsRenderer) return;
+                directionsService.route({
+                    origin: origin,
+                    destination: destination,
+                    travelMode: 'DRIVING'
+                }, function(result, status) {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(result);
                     }
                 });
             }
 
-            function animateCurrent() {
-                resetClasses();
-                const img = rideImgs[current];
-                img.classList.remove('looping');
-                img.classList.add('slide-active');
-                setTimeout(() => {
-                    img.classList.remove('slide-active');
-                    img.classList.add('scale-out');
-                    setTimeout(() => {
-                        img.classList.remove('scale-out');
-                        current = (current + 1) % total;
-                        animateCurrent();
-                    }, 700); // scale out duration
-                }, 1800); // slide duration before scale out
+            // Patch: expose map instance for directionsRenderer
+            window.initMap = function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        window.map = new google.maps.Map(document.getElementById('map'), {
+                            center: userLocation,
+                            zoom: 16,
+                            disableDefaultUI: true
+                        });
+                        new google.maps.Marker({
+                            position: userLocation,
+                            map: window.map,
+                            title: "You are here"
+                        });
+                        if (directionsRenderer) directionsRenderer.setMap(window.map);
+                    }, function() {
+                        handleLocationError(true);
+                    });
+                } else {
+                    handleLocationError(false);
+                }
+            };
+            </script>
+            <!-- Google Maps Places API (add &libraries=places) -->
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkcQMADr6TwIf-r_KnupVgPkpcADbfaEA&callback=initMap&libraries=places"></script>
+
+            <div class="choosetrip">
+                <h3>Choose a Trip</h3>
+                <div class="cabs" id="cabxz" draggable="true" data-label="Cab X Opted" data-price="3000">
+                    <i class="fas fa-car-side fa-2x mb-1" style="color:#007bff;"></i>
+                    Cab X <span class="badge bg-light text-dark ms-auto" id="cabxz-price"></span>
+                </div>
+                <div class="cabs" id="cabxlz" draggable="true" data-label="Cab XL Opted" data-price="3500">
+                    <i class="fas fa-taxi fa-2x mb-1" style="color:#28a745;"></i>
+                    Cab XL <span class="badge bg-light text-dark ms-auto" id="cabxlz-price"></span>
+                </div>
+                <div class="cabs" id="vipcabz" draggable="true" data-label="Vip Cab Opted" data-price="4000">
+                    <i class="fas fa-crown fa-2x mb-1" style="color:#ffc107;"></i>
+                    Vip Cab <span class="badge bg-light text-dark ms-auto" id="vipcabz-price"></span>
+                </div>
+                <div class="cabs" id="boadz" draggable="true" data-label="Boda Opted" data-price="2000">
+                    <i class="fas fa-motorcycle fa-2x mb-1" style="color:#dc3545;"></i>
+                    Boda <span class="badge bg-light text-dark ms-auto" id="boadz-price"></span>
+                </div>
+                <div class="button1" id="buttonz">
+                    <button id="cabOptBtn" disabled>Choose a Cab</button>
+                </div>
+            </div>
+
+            <!-- Popup Notification -->
+            <div id="popupNotification" style="display:none;position:fixed;top:30px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:18px 32px;border-radius:10px;z-index:9999;font-size:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,0.15);"></div>
+
+            <script>
+            // Price per km for each cab type
+            const cabPrices = {
+                cabxz: 4000,
+                cabxlz: 5000,
+                vipcabz: 6000,
+                boadz: 1500
+            };
+
+            // Update price badges
+            for (const [id, price] of Object.entries(cabPrices)) {
+                const badge = document.getElementById(id + '-price');
+                if (badge) badge.textContent = `UGX ${price}/km`;
             }
 
-            animateCurrent();
-        });
-        </script>
+            let selectedCabId = null;
+            let tripDistance = null; // in km
+            let tripPrice = null;
 
+            // Handle cab selection
+            document.querySelectorAll('.cabs').forEach(function(cab) {
+                cab.addEventListener('click', function() {
+                    document.querySelectorAll('.cabs').forEach(function(c) {
+                        c.classList.remove('selected');
+                    });
+                    cab.classList.add('selected');
+                    selectedCabId = cab.id;
+                    const btn = document.getElementById('cabOptBtn');
+                    btn.textContent = cab.getAttribute('data-label');
+                    btn.disabled = !(tripDistance && selectedCabId);
+                    // Update price in badge if distance is set
+                    if (tripDistance) {
+                        updateCabPrices();
+                    }
+                });
+            });
+
+            // Handle destination input and calculate distance
+            let userLocation = null;
+            let destinationLatLng = null;
+
+            function updateCabPrices() {
+                for (const [id, price] of Object.entries(cabPrices)) {
+                    const badge = document.getElementById(id + '-price');
+                    if (badge && tripDistance) {
+                        badge.textContent = `UGX ${formatMoney(Math.round(price * tripDistance))} (${price}/km)`;
+                    } else if (badge) {
+                        badge.textContent = `UGX ${price}/km`;
+                    }
+                }
+            }
+
+            function formatMoney(num) {
+                return num.toLocaleString('en-UG');
+            }
+
+            function showPopup(msg) {
+                const popup = document.getElementById('popupNotification');
+                popup.textContent = msg;
+                popup.style.display = 'block';
+                setTimeout(() => { popup.style.display = 'none'; }, 3500);
+            }
+
+            document.getElementById('whereToForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const dest = document.getElementById('destinationInput').value;
+                if (!dest) return;
+                // Get user's current location
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        // Geocode destination
+                        geocodeDestination(dest, function(destLatLng, address) {
+                            if (!destLatLng) {
+                                document.getElementById('distanceInfo').textContent = "Destination not found.";
+                                tripDistance = null;
+                                updateCabPrices();
+                                document.getElementById('cabOptBtn').disabled = true;
+                                return;
+                            }
+                            destinationLatLng = destLatLng;
+                            // Calculate distance using Google Maps Distance Matrix API
+                            calculateDistance(userLocation, destinationLatLng, function(distanceKm, durationText) {
+                                if (distanceKm !== null) {
+                                    tripDistance = distanceKm;
+                                    document.getElementById('distanceInfo').textContent =
+                                        `Distance: ${distanceKm.toFixed(2)} km (${durationText})`;
+                                    updateCabPrices();
+                                    // Enable button if cab selected
+                                    document.getElementById('cabOptBtn').disabled = !selectedCabId;
+                                } else {
+                                    document.getElementById('distanceInfo').textContent = "Could not calculate distance.";
+                                    tripDistance = null;
+                                    updateCabPrices();
+                                    document.getElementById('cabOptBtn').disabled = true;
+                                }
+                            });
+                        });
+                    }, function() {
+                        document.getElementById('distanceInfo').textContent = "Could not get your location.";
+                    });
+                } else {
+                    document.getElementById('distanceInfo').textContent = "Geolocation not supported.";
+                }
+            });
+
+            // Geocode destination using Google Maps Geocoding API
+            function geocodeDestination(address, callback) {
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address: address }, function(results, status) {
+                    if (status === 'OK' && results[0]) {
+                        callback({
+                            lat: results[0].geometry.location.lat(),
+                            lng: results[0].geometry.location.lng()
+                        }, results[0].formatted_address);
+                    } else {
+                        callback(null, null);
+                    }
+                });
+            }
+
+            // Calculate distance using Google Maps Distance Matrix API
+            function calculateDistance(origin, destination, callback) {
+                const service = new google.maps.DistanceMatrixService();
+                service.getDistanceMatrix({
+                    origins: [origin],
+                    destinations: [destination],
+                    travelMode: 'DRIVING'
+                }, function(response, status) {
+                    if (status === 'OK' && response.rows[0].elements[0].status === 'OK') {
+                        const distanceMeters = response.rows[0].elements[0].distance.value;
+                        const durationText = response.rows[0].elements[0].duration.text;
+                        callback(distanceMeters / 1000, durationText);
+                    } else {
+                        callback(null, null);
+                    }
+                });
+            }
+
+            // Handle cab option button click
+            document.getElementById('cabOptBtn').addEventListener('click', function() {
+                if (!selectedCabId || !tripDistance) return;
+                const pricePerKm = cabPrices[selectedCabId];
+                const total = Math.round(pricePerKm * tripDistance);
+                showPopup(`Trip Price: UGX ${formatMoney(total)}`);
+            });
+            </script>
 
        <footer>
-        
-        
         <div class="footer-fixed">
             <div class="footer-nav">
                 <a href="#" class="footer-item">
