@@ -37,17 +37,23 @@
     <section class="map">
         <!-- Live Map Embed (using OpenStreetMap via Leaflet.js) -->
         <!-- Google Maps Embed API -->
-        <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d126743.72640972436!2d32.5825209!3d0.3475964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sug!4v1710000000000!5m2!1sen!2sug"
-                width="100%"
-                height="100%"
-                style="border:0;"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-        </div>
+        <!-- Lightweight, fast-loading map using Leaflet.js and OpenStreetMap -->
+        <div id="map" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"></div>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var map = L.map('map', {
+                    center: [0.3476, 32.5825],
+                    zoom: 13,
+                    zoomControl: false,
+                    attributionControl: false
+                });
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19
+                }).addTo(map);
+            });
+        </script>
     <!-- Navigation -->
         <section class="header">
             <nav>
@@ -72,70 +78,8 @@
         </div>
 
 
-        <!------------------------Where to-->
+       
         
-        <section>
-                <div class="trip-form">
-                    <button type="button" class="btn btn-primary w-100" id="showDirectionBtn" onclick="window.location.href='opt.html'">Let'S Go</button>
-                </div>
-                <style>
-                .trip-form {
-                    background: #ffffff;
-                    border-top-left-radius: 20px;
-                    border-top-right-radius: 20px;
-                    border-bottom-left-radius: 0px;
-                    border-bottom-right-radius: 0px;
-                    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-                    padding: 18px 50px 12px 50px;
-                    margin: 0px;
-
-                }
-                #priceEstimate {
-                    min-height: 24px;
-                }
-                </style>
-                
-            </section>
-
-
-        <!---------------------------Pick Aride-->
-        <section class="pick-ride">
-            <h2>Pick your ride</h2>
-            <div class="row" style="display: flex;">
-                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
-                    <h3>Cab X</h3>
-                    <div class="ride-img-anim">
-                        <img src="image/4sit.png" alt="Four Seater" class="ride-img" data-index="0">
-                    </div>
-                    <p>Fair Price</p>
-                </div>
-                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
-                    <h3>Cab XL</h3>
-                    <div class="ride-img-anim">
-                        <img src="image/6sita.png" alt="Six Seater" class="ride-img" data-index="1">
-                    </div>
-                    <p>Moderate Price</p>
-                </div>
-            </div>
-            <div class="row" style="display: flex;">
-                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
-                    <h3>Cab VIP</h3>
-                    <div class="ride-img-anim">
-                        <img src="image/vip.png" alt="Corporate" class="ride-img" data-index="2">
-                    </div>
-                    <p>Corporate Price</p>
-                </div>
-                
-                <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
-                    
-                    <h3>Boda</h3>
-                    <div class="ride-img-anim">
-                        <img src="image/boda.png" alt="Boda" class="ride-img" data-index="3">
-                    </div>
-                    <p>Quick ride</p>
-                </div>
-            </div>
-        </section>
         <style>
 
            
@@ -264,6 +208,50 @@
 
 
        <footer>
+        <div class="footer-fixed">
+            <section>
+                <div class="trip-form">
+                    <button type="button" class="btn btn-primary w-100" id="showDirectionBtn" onclick="window.location.href='opt.html'">Let'S Go</button>
+                </div>
+                
+            </section>
+            <section class="pick-ride">
+                <h2>Pick your ride</h2>
+                <div class="row" style="display: flex;">
+                    <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
+                        <h3>Cab X</h3>
+                        <div class="ride-img-anim">
+                            <img src="image/4sit.png" alt="Four Seater" class="ride-img" data-index="0">
+                        </div>
+                        <p>Fair Price</p>
+                    </div>
+                    <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
+                        <h3>Cab XL</h3>
+                        <div class="ride-img-anim">
+                            <img src="image/6sita.png" alt="Six Seater" class="ride-img" data-index="1">
+                        </div>
+                        <p>Moderate Price</p>
+                    </div>
+                </div>
+                <div class="row" style="display: flex;">
+                    <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
+                        <h3>Cab VIP</h3>
+                        <div class="ride-img-anim">
+                            <img src="image/vip.png" alt="Corporate" class="ride-img" data-index="2">
+                        </div>
+                        <p>Corporate Price</p>
+                    </div>
+                    
+                    <div class="col" style="background: #fff; margin: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 16px;">
+                        
+                        <h3>Boda</h3>
+                        <div class="ride-img-anim">
+                            <img src="image/boda.png" alt="Boda" class="ride-img" data-index="3">
+                        </div>
+                        <p>Quick ride</p>
+                    </div>
+                </div>
+            </section>
         
         
         <div class="footer-fixed">
