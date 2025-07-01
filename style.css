@@ -161,6 +161,8 @@ nav .fas{
 
 
 .footer-fixed {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     position: fixed;
     bottom: 0;
     left: 0;
