@@ -96,12 +96,72 @@
         </div>
         <div id="popupNotification" style="display:none;position:fixed;top:30px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:18px 32px;border-radius:10px;z-index:9999;font-size:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,0.15);"></div>
         <!-- Footer -->
-        <footer>
+    <footer>
             <div class="footer-fixed">
                 <div class="button1" id="buttonz">
                     <button id="cabOptBtn" disabled>Choose a Cab</button>
+                    <button id="confirmTripBtn" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:10000;">Confirm Trip</button>
+                    <script>
+                        const cabOptBtn = document.getElementById('cabOptBtn');
+                        const confirmTripBtn = document.getElementById('confirmTripBtn');
+                        const choosetripOverlay = document.querySelector('.choosetrip-overlay');
+                        const headerSection = document.querySelector('.header');
+                        const footerFixed = document.querySelector('.footer-fixed');
+                        let pickupMarker = null;
+
+                        cabOptBtn.addEventListener('click', function () {
+                            if (!selectedCabId || !tripDistance) return;
+                            // Hide overlays and header, show only map and confirm button
+                            choosetripOverlay.style.display = 'none';
+                            if (headerSection) headerSection.style.display = 'none';
+                            cabOptBtn.style.display = 'none';
+                            confirmTripBtn.style.display = 'block';
+                            // Make map full screen
+                            document.getElementById('map').style.position = 'fixed';
+                            document.getElementById('map').style.top = '0';
+                            document.getElementById('map').style.left = '0';
+                            document.getElementById('map').style.width = '100vw';
+                            document.getElementById('map').style.height = '100vh';
+                            document.body.style.overflow = 'hidden';
+                            // Show pickup marker and info
+                            if (window.userLocation && window.map) {
+                                if (pickupMarker) pickupMarker.setMap(null);
+                                pickupMarker = new google.maps.Marker({
+                                    position: window.userLocation,
+                                    map: window.map,
+                                    label: "P",
+                                    title: "Pickup Location"
+                                });
+                                const infoWindow = new google.maps.InfoWindow({
+                                    content: "<b>Pickup Location</b><br>Lat: " + window.userLocation.lat.toFixed(5) + "<br>Lng: " + window.userLocation.lng.toFixed(5)
+                                });
+                                pickupMarker.addListener('click', function () {
+                                    infoWindow.open(window.map, pickupMarker);
+                                });
+                                infoWindow.open(window.map, pickupMarker);
+                            }
+                        });
+
+                        confirmTripBtn.addEventListener('click', function () {
+                            // You can add your confirm logic here
+                            showPopup('Trip Confirmed! Driver is on the way.');
+                            // Optionally, restore UI
+                            choosetripOverlay.style.display = '';
+                            if (headerSection) headerSection.style.display = '';
+                            cabOptBtn.style.display = '';
+                            confirmTripBtn.style.display = 'none';
+                            document.getElementById('map').style.position = '';
+                            document.getElementById('map').style.top = '';
+                            document.getElementById('map').style.left = '';
+                            document.getElementById('map').style.width = '';
+                            document.getElementById('map').style.height = '';
+                            document.body.style.overflow = '';
+                            if (pickupMarker) pickupMarker.setMap(null);
+                        });
+                    </script>
                 </div>
             </div>
+            
         </footer>
     </section>
 
